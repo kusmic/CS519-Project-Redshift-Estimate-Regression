@@ -1,0 +1,1 @@
+COSMOS Data URL: https://archive.stsci.edu/pub/hlsp/candels/cosmos/catalogs/v1/
