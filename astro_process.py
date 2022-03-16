@@ -14,7 +14,7 @@ import numpy as np
 photom_tab = Table.read("hlsp_candels_hst_wfc3_cos-tot-multiband_f160w_v1-1photom_cat.fits")
 z_tab = Table.read("hlsp_candels_hst_wfc3_cos_v1_photoz_cat.fits")
 
-# First all the photometry, both linear and log
+# First all the photometry, both linear and log, reading them in
 F606W_flux = photom_tab["ACS_F606W_FLUX"].value
 F814W_flux = photom_tab["ACS_F814W_FLUX"].value
 F125W_flux = photom_tab["WFC3_F125W_FLUX"].value
@@ -53,7 +53,7 @@ for colname in z_techs:
     z += z_tab[colname].value
     N += 1
     
-z /= N
+z /= N # averaging the redshifts
 
 lin_names = ["F606W flux (muJy)","F814W flux (muJy)","F125W flux (muJy)",
              "F160W flux (muJy)","F606W err (muJy)","F814W err (muJy)",
@@ -63,16 +63,32 @@ log_names = ["F606W (mag)","F814W (mag)","F125W (mag)","F160W (mag)",
              "F606W (magerr)","F814W (magerr)","F125W (magerr)","F160W (magerr)",
              "redshift"]
 
+# Making Table objects for flux and magnitudes
 lin_tab = Table([F606W_flux,F814W_flux,F125W_flux,F160W_flux,
                  F606W_fluxerr,F814W_fluxerr,F125W_fluxerr,F160W_fluxerr,z],
                 names=lin_names)
+
+# Removing rows with nan
+hasNan_lin = np.zeros(len(lin_tab), dtype=bool)
+for col in lin_tab.itercols():
+    if col.info.dtype.kind == 'f':
+        hasNan_lin |= np.isnan(col)
+lin_tab_noNan = lin_tab[~hasNan_lin]
 
 log_tab = Table([F606W_mag,F814W_mag,F125W_mag,F160W_mag,
                  F606W_magerr,F814W_magerr,F125W_magerr,F160W_magerr,z],
                 names=log_names)
 
+# Removing rows with nan
+hasNan_log = np.zeros(len(log_tab), dtype=bool)
+for col in log_tab.itercols():
+    if col.info.dtype.kind == 'f':
+        hasNan_log |= np.isnan(col)
+log_tab_noNan = log_tab[~hasNan_lin]
+
 linfname = "mldata_lin.csv"
 logfname = "mldata_log.csv"
 
-lin_tab.write(linfname, format="csv", overwrite=True)
-log_tab.write(logfname, format="csv", overwrite=True)
+lin_tab_noNan.write(linfname, format="csv", overwrite=True)
+log_tab_noNan.write(logfname, format="csv", overwrite=True)
+print(len(log_tab_noNan), len(lin_tab_noNan))
