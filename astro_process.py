@@ -27,12 +27,12 @@ F160W_fluxerr = photom_tab["WFC3_F160W_FLUXERR"].value
 
 for arr in [F606W_flux, F814W_flux, F125W_flux, F160W_flux]:
     for i in range(len(arr)):
-        if arr[i] == -9.90e+01:
+        if arr[i] < 0.:
             arr[i] = np.nan
             
 for arr in [F606W_fluxerr, F814W_fluxerr, F125W_fluxerr, F160W_fluxerr]:
     for i in range(len(arr)):
-        if arr[i] == -9.90e+01:
+        if arr[i] < 0.:
             arr[i] = np.nan
 
 F606W_mag = -2.5 * np.log10(F606W_flux)
@@ -69,10 +69,8 @@ lin_tab = Table([F606W_flux,F814W_flux,F125W_flux,F160W_flux,
                 names=lin_names)
 
 # Removing rows with nan
-hasNan_lin = np.zeros(len(lin_tab), dtype=bool)
-for col in lin_tab.itercols():
-    if col.info.dtype.kind == 'f':
-        hasNan_lin |= np.isnan(col)
+data_lin = np.lib.recfunctions.structured_to_unstructured(np.array(lin_tab))
+hasNan_lin = np.any(np.isnan(data_lin), axis=1)
 lin_tab_noNan = lin_tab[~hasNan_lin]
 
 log_tab = Table([F606W_mag,F814W_mag,F125W_mag,F160W_mag,
@@ -80,11 +78,9 @@ log_tab = Table([F606W_mag,F814W_mag,F125W_mag,F160W_mag,
                 names=log_names)
 
 # Removing rows with nan
-hasNan_log = np.zeros(len(log_tab), dtype=bool)
-for col in log_tab.itercols():
-    if col.info.dtype.kind == 'f':
-        hasNan_log |= np.isnan(col)
-log_tab_noNan = log_tab[~hasNan_lin]
+data_log = np.lib.recfunctions.structured_to_unstructured(np.array(log_tab))
+hasNan_log = np.any(np.isnan(data_log), axis=1)
+log_tab_noNan = log_tab[~hasNan_log]
 
 linfname = "mldata_lin.csv"
 logfname = "mldata_log.csv"
