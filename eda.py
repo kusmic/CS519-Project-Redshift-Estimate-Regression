@@ -10,6 +10,9 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
+val=2.1
+sns.set(font_scale=val)
+
 def pairplot_lin():
     df_lin = pd.read_csv("mldata_lin_est.csv")
     colnames_lin = np.asarray(list(df_lin.columns))
