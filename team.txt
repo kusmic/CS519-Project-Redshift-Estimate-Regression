@@ -1,3 +1,8 @@
-Samir Kusmic
-Maryam Sharifi
-Hengameh Mirhajianmoghadam
+Samir Kusmic:
+      EDA, Random Forest Regression, Deep Neural Network, Introduction and Data/      Method discussion
+     
+Maryam Sharifi:
+      EDA, Linear Regression, Deep Neural Network
+      
+Hengameh Mirhajianmoghadam:
+      EDA, Polynomial expansion, Deep Neural Network
