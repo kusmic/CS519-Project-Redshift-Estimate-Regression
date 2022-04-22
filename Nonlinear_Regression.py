@@ -32,16 +32,31 @@ sc1.fit(y_train)
 y_train_std = sc1.transform(y_train)
 y_test_std = sc1.transform(y_test)
 
-threeD = PolynomialFeatures(degree=3)
+#__________________________________________________________________
+twoD = PolynomialFeatures(degree=2)
+x_train_twoD_std = twoD.fit_transform(x_train_std)
+x_test_twoD_std = twoD.fit_transform(x_test_std)
+
+start_time = time.time()
+non_reg = LinearRegression()
+non_reg.fit(x_train_twoD_std, y_train_std)
+print(" Running time: %s seconds " % (time.time() - start_time))
+y_test_pred_std = non_reg.predict(x_test_twoD_std)
+y_train_pred_std = non_reg.predict(x_train_twoD_std)
+#___________________________________________________________________
+
+"""threeD = PolynomialFeatures(degree=3)
 x_train_threeD_std = threeD.fit_transform(x_train_std)
 x_test_threeD_std = threeD.fit_transform(x_test_std)
 
 start_time = time.time()
 non_reg = LinearRegression()
 non_reg.fit(x_train_threeD_std, y_train_std)
-print(" Running time: %s seconds " % (time.time() - start_time))
+print("Running time: %s seconds " % (time.time() - start_time))
 y_test_pred_std = non_reg.predict(x_test_threeD_std)
-y_train_pred_std = non_reg.predict(x_train_threeD_std)
+y_train_pred_std = non_reg.predict(x_train_threeD_std)"""
+
+#_____________________________________________________________________
 
 y_test_pred = sc1.inverse_transform(y_test_pred_std)
 y_train_pred = sc1.inverse_transform(y_train_pred_std)
