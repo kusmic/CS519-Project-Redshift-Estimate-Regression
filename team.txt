@@ -2,7 +2,7 @@ Samir Kusmic:
       EDA, Random Forest Regression, Deep Neural Network, Introduction and Data, Method discussion
      
 Maryam Sharifi:
-      EDA, Linear Regression, Deep Neural Network, Method discussion
+      EDA, Linear Regression, Deep Neural Network, Method discussion, Conclusion
       
 Hengameh Mirhajianmoghadam:
       EDA, Polynomial expansion, Deep Neural Network, Method discussion, Conclusion
